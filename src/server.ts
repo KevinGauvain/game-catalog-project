@@ -19,7 +19,7 @@ export function makeApp(db: Db): core.Express {
     response.render("index");
   });
 
-  app.get("/plateform", (request: Request, response: Response) => {
+  app.get("/platform", (request: Request, response: Response) => {
     response.render("platform");
   });
 
@@ -29,6 +29,15 @@ export function makeApp(db: Db): core.Express {
       const games = await database.collection("games").find().toArray();
       // console.log(games);
       response.render("home", { games: games });
+    });
+  });
+
+  app.get("/type", (request: Request, response: Response) => {
+    client.connect().then(async () => {
+      const database = client.db();
+      const games = await database.collection("games").find().toArray();
+      // console.log(games);
+      response.render("type", { games: games });
     });
   });
 
