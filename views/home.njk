@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <title>HomePage</title>
+  </head>
+  <body>
+  <ul>
+  {% for game in games %}
+    <li>{{game.name}}</li>
+  {% endfor %}
+  </ul>
+  </body>
+</html>
