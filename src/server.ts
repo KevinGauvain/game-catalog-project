@@ -20,7 +20,12 @@ export function makeApp(db: Db): core.Express {
   });
 
   app.get("/platform", (request: Request, response: Response) => {
-    response.render("platform");
+    client.connect().then(async () => {
+      const database = client.db();
+      const games = await database.collection("games").find().toArray();
+      // console.log(games);
+      response.render("platform", { games: games });
+    });
   });
 
   app.get("/home", (request: Request, response: Response) => {
