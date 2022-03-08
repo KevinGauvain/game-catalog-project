@@ -26,7 +26,10 @@ export function makeApp(db: Db): core.Express {
   app.get("/home", (request: Request, response: Response) => {
     client.connect().then(async () => {
       const database = client.db();
-      const games = await database.collection("games").find().toArray();
+      const games = await database
+        .collection("games")
+        .aggregate([{ $limit: 20 }])
+        .toArray();
       // console.log(games);
       response.render("home", { games: games });
     });
