@@ -8,6 +8,8 @@ export function makeApp(db: Db): core.Express {
   const client = new MongoClient(databaseUrl);
   const app = express();
 
+  app.use(express.static("static"));
+
   nunjucks.configure("views", {
     autoescape: true,
     express: app,
