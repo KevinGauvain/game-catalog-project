@@ -9,7 +9,9 @@
     {% for game in games %}
         <li>
           <p>{{game.name}}</p>
-            {% if game.cover !== undefined %}
+            {% if game.cover === undefined %}
+            <img src="images/CoverMissing.jpg" alt ="Game's cover is missing" />
+            {% else %}
             <img src="{{game.cover.url}}" alt="Game's cover" />
             {% endif %}
         </li>
