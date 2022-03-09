@@ -1,15 +1,9 @@
-<!DOCTYPE html>
- <html>
-   <head>
-     <meta charset="UTF-8">
-     <title>Type Page</title>
-   </head>
-   <body>
+{% extends "layout.njk" %}
+  {% block content %}
    <h1>Listes des différents genres de jeux</h1>
    <ul>
    {% for game in games %}
      <li>{{game.genres}}</li>
    {% endfor %}
    </ul>
-   </body>
- </html>
+  {% endblock %}

@@ -1,10 +1,5 @@
-<!DOCTYPE html>
- <html>
-   <head>
-     <meta charset="UTF-8">
-     <title>HomePage</title>
-   </head>
-   <body>
+{% extends "layout.njk" %}
+{% block content %}
    <ul>
     {% for game in games %}
         <li>
@@ -17,5 +12,4 @@
         </li>
     {% endfor %}
    </ul>
-   </body>
- </html>
+{% endblock %}

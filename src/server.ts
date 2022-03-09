@@ -21,7 +21,7 @@ export function makeApp(db: Db): core.Express {
     response.render("index");
   });
 
-  app.get("/platform", (request: Request, response: Response) => {
+  app.get("/platforms", (request: Request, response: Response) => {
     client.connect().then(async () => {
       const database = client.db();
       const games = await database.collection("games").find().toArray();
@@ -42,7 +42,7 @@ export function makeApp(db: Db): core.Express {
     });
   });
 
-  app.get("/type", (request: Request, response: Response) => {
+  app.get("/types", (request: Request, response: Response) => {
     client.connect().then(async () => {
       const database = client.db();
       const games = await database.collection("games").find().toArray();
