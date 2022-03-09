@@ -40,7 +40,6 @@ export function makeApp(db: Db): core.Express {
     client.connect().then(async () => {
       const database = client.db();
       const games = await database.collection("games").find().toArray();
-      // console.log(games);
       response.render("home", { games: games });
     });
   });
@@ -49,7 +48,6 @@ export function makeApp(db: Db): core.Express {
     client.connect().then(async () => {
       const database = client.db();
       const games = await database.collection("games").find().toArray();
-      // console.log(games);
       response.render("type", { games: games });
     });
   });
@@ -69,16 +67,14 @@ export function makeApp(db: Db): core.Express {
   });
 
   app.get("/getToken", async (request: Request, response: Response) => {
-    console.log("code : ----------", request.query);
     const resp = await fetch("https://dev-bq3ca7ko.eu.auth0.com/oauth/token", {
       method: "post",
       headers: { "Content-Type": "application/x-www-form-urlencoded" },
       body: `grant_type=authorization_code&response_type=id_token&client_id=${authClientID}&client_secret=${authClientSecret}&code=${request.query.code}&redirect_uri=${authRedirectUri}`,
     });
-    const data = await resp.json();
-    console.log(data);
+    const tokenData = await resp.json();
 
-    response.redirect("home");
+    response.redirect("/");
   });
 
   return app;
