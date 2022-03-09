@@ -1,11 +1,9 @@
 import express, { Request, Response } from "express";
 import * as core from "express-serve-static-core";
-import { Db, MongoClient } from "mongodb";
+import { Db } from "mongodb";
 import nunjucks from "nunjucks";
 
 export function makeApp(db: Db): core.Express {
-  const databaseUrl = process.env.MONGO_URL || "";
-  const client = new MongoClient(databaseUrl);
   const app = express();
 
   app.use(express.static("static"));
@@ -17,34 +15,25 @@ export function makeApp(db: Db): core.Express {
 
   app.set("view engine", "njk");
 
-  app.get("/platforms", (request: Request, response: Response) => {
-    client.connect().then(async () => {
-      const database = client.db();
-      const platforms = await database.collection("games").find().toArray();
-      // console.log(games);
-      response.render("platforms", { platforms: platforms });
-    });
+  app.get("/platforms", async (request: Request, response: Response) => {
+    const platforms = await db.collection("games").find().toArray();
+    // console.log(games);
+    response.render("platforms", { platforms: platforms });
   });
 
-  app.get("/", (request: Request, response: Response) => {
-    client.connect().then(async () => {
-      const database = client.db();
-      const games = await database
-        .collection("games")
-        .aggregate([{ $limit: 20 }])
-        .toArray();
-      // console.log(games);
-      response.render("home", { games: games });
-    });
+  app.get("/", async (request: Request, response: Response) => {
+    const games = await db
+      .collection("games")
+      .aggregate([{ $limit: 20 }])
+      .toArray();
+    // console.log(games);
+    response.render("home", { games: games });
   });
 
-  app.get("/types", (request: Request, response: Response) => {
-    client.connect().then(async () => {
-      const database = client.db();
-      const types = await database.collection("games").find().toArray();
-      // console.log(games);
-      response.render("types", { types: types });
-    });
+  app.get("/types", async (request: Request, response: Response) => {
+    const types = await db.collection("games").find().toArray();
+    // console.log(games);
+    response.render("types", { types: types });
   });
 
   return app;
