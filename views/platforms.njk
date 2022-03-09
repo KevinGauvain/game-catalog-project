@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+ <html>
+   <head>
+     <meta charset="UTF-8">
+     <title>Platform Page</title>
+   </head>
+   <body>
+   <h1>Listes des différentes platformes de jeux</h1>
+   <ul>
+    {% for platform in platforms %}
+        <li>
+          <p>{{platform.platform.name}}</p>
+            {% if platform.platform.platform_logo_url !== undefined %}
+            <img src="{{platform.platform.platform_logo_url}}" alt="Platform's cover" />
+            {% endif %}
+        </li>
+    {% endfor %}
+   </ul>
+   </body>
+ </html>

@@ -21,12 +21,12 @@ export function makeApp(db: Db): core.Express {
     response.render("index");
   });
 
-  app.get("/platform", (request: Request, response: Response) => {
+  app.get("/platforms", (request: Request, response: Response) => {
     client.connect().then(async () => {
       const database = client.db();
-      const games = await database.collection("games").find().toArray();
+      const platforms = await database.collection("games").find().toArray();
       // console.log(games);
-      response.render("platform", { games: games });
+      response.render("platforms", { platforms: platforms });
     });
   });
 
@@ -42,12 +42,12 @@ export function makeApp(db: Db): core.Express {
     });
   });
 
-  app.get("/type", (request: Request, response: Response) => {
+  app.get("/types", (request: Request, response: Response) => {
     client.connect().then(async () => {
       const database = client.db();
-      const games = await database.collection("games").find().toArray();
+      const types = await database.collection("games").find().toArray();
       // console.log(games);
-      response.render("type", { games: games });
+      response.render("types", { types: types });
     });
   });
 
