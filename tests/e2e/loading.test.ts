@@ -49,7 +49,7 @@ test("Test that we have an index with an h1", async () => {
 
   await goto("http://localhost:3030");
 
-  expect(await text("This should be changed in the first PR").exists()).toBe(
+  expect(await text("Bienvenue sur notre site de jeux vidéos").exists()).toBe(
     true
   );
 });
