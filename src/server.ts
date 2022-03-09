@@ -17,10 +17,6 @@ export function makeApp(db: Db): core.Express {
 
   app.set("view engine", "njk");
 
-  app.get("/", (request: Request, response: Response) => {
-    response.render("index");
-  });
-
   app.get("/platforms", (request: Request, response: Response) => {
     client.connect().then(async () => {
       const database = client.db();
@@ -30,7 +26,7 @@ export function makeApp(db: Db): core.Express {
     });
   });
 
-  app.get("/home", (request: Request, response: Response) => {
+  app.get("/", (request: Request, response: Response) => {
     client.connect().then(async () => {
       const database = client.db();
       const games = await database
