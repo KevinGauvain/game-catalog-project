@@ -4,11 +4,10 @@ import { Db } from "mongodb";
 import nunjucks from "nunjucks";
 import fetch from "node-fetch";
 import cookie from "cookie";
-import * as jose from "jose"
+import * as jose from "jose";
 
 export function makeApp(db: Db): core.Express {
   const app = express();
-
 
   const authDomain = process.env.AUTH0_DOMAIN || "";
   const authClientID = process.env.AUTH0_CLIENT_ID || "";
@@ -21,7 +20,6 @@ export function makeApp(db: Db): core.Express {
   const jwksUrl = new URL(jsonWebKeySet);
 
   app.use(express.static("static"));
-
 
   nunjucks.configure("views", {
     autoescape: true,
@@ -44,7 +42,7 @@ export function makeApp(db: Db): core.Express {
         platformObject.push(tabMapped[i]);
       }
     }
-    console.log(platformObject);
+    // console.log(platformObject);
     response.render("platforms", { platformObject: platformObject });
   });
 
@@ -82,12 +80,11 @@ export function makeApp(db: Db): core.Express {
     const authClientID = process.env.AUTH0_CLIENT_ID || "";
 
     response.redirect(
-      `https://${authDomain}/v2/logout?client_id=${authClientID}`
+      `https://${authDomain}/v2/logout?client_id=${authClientID}&returnTo=${process.env.CURRENT_DOMAIN}`
     );
   });
 
   app.get("/getToken", async (request: Request, response: Response) => {
-
     const resp = await fetch("https://dev-bq3ca7ko.eu.auth0.com/oauth/token", {
       method: "post",
       headers: { "Content-Type": "application/x-www-form-urlencoded" },
@@ -135,8 +132,8 @@ export function makeApp(db: Db): core.Express {
       response.redirect("/platforms");
       return;
     }
-    response.redirect("/types")
-  })
+    response.redirect("/types");
+  });
 
   return app;
 }
