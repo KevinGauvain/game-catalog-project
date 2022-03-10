@@ -106,7 +106,7 @@ export function makeApp(db: Db): core.Express {
     const authClientID = process.env.AUTH0_CLIENT_ID || "";
 
     response.redirect(
-      `https://${authDomain}/v2/logout?client_id=${authClientID}`
+      `https://${authDomain}/v2/logout?client_id=${authClientID}&returnTo=${process.env.CURRENT_DOMAIN}`
     );
   });
 
