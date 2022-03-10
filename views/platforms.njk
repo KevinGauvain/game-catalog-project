@@ -4,7 +4,7 @@
    <ul>
     {% for platform in platformObject %}
         <li>
-          <p>{{platform.name}}</p>
+          <a href="/platform/{{platform.name}}">{{platform.name}}</a>
             {% if platform.platform_logo_url !== undefined %}
             <img src="{{platform.platform_logo_url}}" alt="Platform's cover" />
             {% endif %}

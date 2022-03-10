@@ -72,8 +72,8 @@ export function makeApp(db: Db): core.Express {
     const tableauGenres: string[] = [];
     for (let i = 0; i < type.length; i++) {
       type[i].forEach((genre: string) => {
-        if (!tableauGenres.includes(genre)) {
-          tableauGenres.push(genre);
+        if (!tableauGenres.includes(genre.replace("/", ","))) {
+          tableauGenres.push(genre.replace("/", ","));
         }
       });
     }
@@ -85,6 +85,26 @@ export function makeApp(db: Db): core.Express {
     const gameSlug = request.params.slug;
     const gameInfo = await db.collection("games").findOne({ slug: gameSlug });
     response.render("gamesInfo", { gameInfo: gameInfo });
+  });
+
+  app.get("/types/:slug", async (request: Request, response: Response) => {
+    const genreSlug = request.params.slug;
+    const genres = await db
+      .collection("games")
+      .find({ genres: genreSlug.replace(",", "/") })
+      .toArray();
+    // console.log(genres);
+    response.render("genres", { genres: genres });
+  });
+
+  app.get("/platform/:slug", async (request: Request, response: Response) => {
+    const platformSlug = request.params.slug;
+    const platforms = await db
+      .collection("games")
+      .find({ "platform.name": platformSlug })
+      .toArray();
+    // console.log(platforms);
+    response.render("platformGame", { platforms: platforms });
   });
 
   app.get("/login", (request: Request, response: Response) => {
