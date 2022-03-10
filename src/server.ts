@@ -4,11 +4,10 @@ import { Db } from "mongodb";
 import nunjucks from "nunjucks";
 import fetch from "node-fetch";
 import cookie from "cookie";
-import * as jose from "jose"
+import * as jose from "jose";
 
 export function makeApp(db: Db): core.Express {
   const app = express();
-
 
   const authDomain = process.env.AUTH0_DOMAIN || "";
   const authClientID = process.env.AUTH0_CLIENT_ID || "";
@@ -17,11 +16,12 @@ export function makeApp(db: Db): core.Express {
   const jsonWebKeySet = process.env.AUTH0_JSON_WEB_KEY_SET || "";
   const authAudience = process.env.AUTH0_AUDIENCE || "";
   const authScope = process.env.AUTH0_SCOPES || "";
-
-  const jwksUrl = new URL(jsonWebKeySet);
+  let jwksUrl: URL;
+  if (jsonWebKeySet) {
+    jwksUrl = new URL(jsonWebKeySet);
+  }
 
   app.use(express.static("static"));
-
 
   nunjucks.configure("views", {
     autoescape: true,
@@ -44,7 +44,7 @@ export function makeApp(db: Db): core.Express {
         platformObject.push(tabMapped[i]);
       }
     }
-    console.log(platformObject);
+    // console.log(platformObject);
     response.render("platforms", { platformObject: platformObject });
   });
 
@@ -59,8 +59,32 @@ export function makeApp(db: Db): core.Express {
 
   app.get("/types", async (request: Request, response: Response) => {
     const types = await db.collection("games").find().toArray();
-    // console.log(types);
-    response.render("types", { types: types });
+    const undefinedTypesFilter = types.filter((game) => {
+      if (game.genres.length <= 0) {
+        return false;
+      } else if (game.genres.length > 0) {
+        return true;
+      }
+    });
+    const type = undefinedTypesFilter.map((game) => {
+      return game.genres;
+    });
+    const tableauGenres: string[] = [];
+    for (let i = 0; i < type.length; i++) {
+      type[i].forEach((genre: string) => {
+        if (!tableauGenres.includes(genre)) {
+          tableauGenres.push(genre);
+        }
+      });
+    }
+    // console.log(tableauGenres);
+    response.render("types", { tableauGenres: tableauGenres });
+  });
+
+  app.get("/game/:slug", async (request: Request, response: Response) => {
+    const gameSlug = request.params.slug;
+    const gameInfo = await db.collection("games").findOne({ slug: gameSlug });
+    response.render("gamesInfo", { gameInfo: gameInfo });
   });
 
   app.get("/login", (request: Request, response: Response) => {
@@ -87,7 +111,6 @@ export function makeApp(db: Db): core.Express {
   });
 
   app.get("/getToken", async (request: Request, response: Response) => {
-
     const resp = await fetch("https://dev-bq3ca7ko.eu.auth0.com/oauth/token", {
       method: "post",
       headers: { "Content-Type": "application/x-www-form-urlencoded" },
@@ -135,8 +158,8 @@ export function makeApp(db: Db): core.Express {
       response.redirect("/platforms");
       return;
     }
-    response.redirect("/types")
-  })
+    response.redirect("/types");
+  });
 
   return app;
 }

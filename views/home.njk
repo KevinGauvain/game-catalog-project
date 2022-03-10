@@ -4,7 +4,7 @@
    <ul>
     {% for game in games %}
         <li>
-          <p>{{game.name}}</p>
+          <a href="/game/{{game.slug}}">{{game.name}}</a>
             {% if game.cover === undefined %}
             <img src="images/CoverMissing.jpg" alt ="Game's cover is missing" />
             {% else %}

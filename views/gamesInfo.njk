@@ -1,0 +1,9 @@
+{% extends "layout.njk" %}
+{% block content %}
+<p>{{gameInfo.name}}</p>
+{% for genre in gameInfo.genres %}
+<p>{{genre}}</p>
+{% endfor %}
+<p>{{gameInfo.platform.name}}</p>
+<p>{{gameInfo.summary}}</p>
+{% endblock %}
