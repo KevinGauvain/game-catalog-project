@@ -9,6 +9,8 @@ import * as jose from "jose"
 export function makeApp(db: Db): core.Express {
   const app = express();
 
+  app.use(express.static("public"));
+
 
   const authDomain = process.env.AUTH0_DOMAIN || "";
   const authClientID = process.env.AUTH0_CLIENT_ID || "";
