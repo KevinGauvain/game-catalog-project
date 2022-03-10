@@ -17,8 +17,20 @@ export function makeApp(db: Db): core.Express {
 
   app.get("/platforms", async (request: Request, response: Response) => {
     const platforms = await db.collection("games").find().toArray();
-    // console.log(games);
-    response.render("platforms", { platforms: platforms });
+    // console.log(platforms[0].platform);
+    const tabMapped: any[] = [];
+    const result = platforms.map((element) => tabMapped.push(element.platform));
+    // console.log(tabMapped);
+    const platformName: any[] = [];
+    const platformObject: any[] = [];
+    for (let i = 0; i < tabMapped.length; i++) {
+      if (!platformName.includes(tabMapped[i].name)) {
+        platformName.push(tabMapped[i].name);
+        platformObject.push(tabMapped[i]);
+      }
+    }
+    // console.log(platformObject);
+    response.render("platforms", { platformObject: platformObject });
   });
 
   app.get("/", async (request: Request, response: Response) => {
@@ -32,8 +44,32 @@ export function makeApp(db: Db): core.Express {
 
   app.get("/types", async (request: Request, response: Response) => {
     const types = await db.collection("games").find().toArray();
-    // console.log(games);
-    response.render("types", { types: types });
+    const undefinedTypesFilter = types.filter((game) => {
+      if (game.genres.length <= 0) {
+        return false;
+      } else if (game.genres.length > 0) {
+        return true;
+      }
+    });
+    const type = undefinedTypesFilter.map((game) => {
+      return game.genres;
+    });
+    const tableauGenres: string[] = [];
+    for (let i = 0; i < type.length; i++) {
+      type[i].forEach((genre: string) => {
+        if (!tableauGenres.includes(genre)) {
+          tableauGenres.push(genre);
+        }
+      });
+    }
+    // console.log(tableauGenres);
+    response.render("types", { tableauGenres: tableauGenres });
+  });
+
+  app.get("/game/:slug", async (request: Request, response: Response) => {
+    const gameSlug = request.params.slug;
+    const gameInfo = await db.collection("games").findOne({ slug: gameSlug });
+    response.render("gamesInfo", { gameInfo: gameInfo });
   });
 
   return app;

@@ -2,8 +2,8 @@
   {% block content %}
    <h1>Listes des différents genres de jeux</h1>
    <ul>
-   {% for type in types %}
-     <li>{{type.genres}}</li>
+   {% for type in tableauGenres %}
+     <li>{{type}}</li>
    {% endfor %}
    </ul>
   {% endblock %}
