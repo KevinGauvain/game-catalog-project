@@ -1,8 +1,37 @@
 {% extends "layout.njk" %}
   {% block content %}
   <h1>Bienvenue sur notre site de jeux vidéos</h1>
-   <ul>
-    {% for game in games %}
+{% for game in games %}
+
+<div style="width: 18rem;" class="card-deck">
+  <div style="width: 18rem;" class="card">
+      {% if game.cover === undefined %}
+      <img style="width: 18rem;" src="images/CoverMissing.jpg" alt ="Game's cover is missing" />
+      {% else %}
+      <img style="width: 18rem;" src="{{game.cover.url}}" alt="Game's cover" />
+      {% endif %}
+    <div class="card-body">
+      <h5 class="card-title">{{game.name}}</h5>
+      <a href="#" class="btn btn-primary">Details Game!</a>
+    </div>
+  </div>
+</div>
+  {# <div class="card-col-sm-3 col-md-2" style="width: 18rem;">
+      {% if game.cover === undefined %}
+      <img src="images/CoverMissing.jpg" alt ="Game's cover is missing" />
+      {% else %}
+      <img src="{{game.cover.url}}" alt="Game's cover" />
+      {% endif %}
+    <div class="card-body">
+      <h5 class="card-title">{{game.name}}</h5>
+      <a href="#" class="btn btn-primary">Details Game!</a>
+    </div>
+  </div> #}
+
+{% endfor %}
+
+   {# <ul> #}
+    {# {% for game in games %}
         <li>
           <a href="/game/{{game.slug}}">{{game.name}}</a>
             {% if game.cover === undefined %}
@@ -10,7 +39,7 @@
             {% else %}
             <img src="{{game.cover.url}}" alt="Game's cover" />
             {% endif %}
-        </li>
-    {% endfor %}
-   </ul>
+        </li> #}
+    {# {% endfor %}
+   </ul> #}
   {% endblock %}
