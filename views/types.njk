@@ -3,7 +3,7 @@
    <h1>Listes des différents genres de jeux</h1>
    <ul>
    {% for type in tableauGenres %}
-     <li>{{type}}</li>
+     <li><a href="/types/{{type}}">{{type}}</a></li>
    {% endfor %}
    </ul>
   {% endblock %}
