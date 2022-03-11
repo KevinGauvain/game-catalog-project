@@ -1,14 +1,17 @@
 {% extends "layout.njk" %}
   {% block content %}
-   <h1>Listes des différentes platformes de Jeux</h1>
-   <ul>
-    {% for platform in platformObject %}
-        <li>
-          <a href="/platform/{{platform.name}}">{{platform.name}}</a>
-            {% if platform.platform_logo_url !== undefined %}
-            <img src="{{platform.platform_logo_url}}" alt="Platform's cover" />
-            {% endif %}
-        </li>
-    {% endfor %}
-   </ul>
+   <h1>Liste des différentes platformes de jeux</h1>
+
+  <div class="container">
+    <div class="row">
+      {% for platform in platformObject %}
+          <div class="col-md-4 col-sm-6">
+            <a href="/platform/{{platform.name}}" class="btn btn-outline-primary link-platform">
+              {{platform.name}}
+            </a>
+          </div>
+      {% endfor %}
+    </div>
+  </div>
+
   {% endblock %}

@@ -1,9 +1,30 @@
 {% extends "layout.njk" %}
 {% block content %}
-<p>{{gameInfo.name}}</p>
-{% for genre in gameInfo.genres %}
-<p>{{genre}}</p>
-{% endfor %}
-<p>{{gameInfo.platform.name}}</p>
-<p>{{gameInfo.summary}}</p>
+  <h1>{{gameInfo.name}}</h1>
+
+  {% if gameInfo.cover === undefined %}
+    <img class="mx-auto my-3 d-block" src="../images/CoverMissing.jpg" alt ="Game's cover is missing" />
+  {% else %}
+    <img class="mx-auto my-3 d-block" src="{{gameInfo.cover.url}}" alt="Game's cover" />
+  {% endif %}
+
+  <div class="container">
+    <p class="text-center text-dark">{{gameInfo.summary}}</p>
+
+    <div class="row">
+
+      <div class="col-md-6 col-sm-12">
+        <h5 class="text-dark"> genres : </h5>
+        {% for genre in gameInfo.genres %}
+          <a class="btn btn-outline-secondary" href="/types/{{genre}}">{{genre}}</a>
+        {% endfor %}
+      </div>
+
+      <div class="col-md-6 col-sm-12">
+        <h5 class="text-dark"> Platform : </h5>
+        <a class="btn btn-outline-secondary" href="/platform/{{gameInfo.platform.name}}">{{gameInfo.platform.name}}</a>
+      </div>
+    </div>
+
+  </div>
 {% endblock %}
