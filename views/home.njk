@@ -1,21 +1,33 @@
 {% extends "layout.njk" %}
-  {% block content %}
-  <h1>Bienvenue sur notre site de jeux vidéos</h1>
-{% for game in games %}
 
-<div style="width: 18rem;" class="card-deck">
-  <div style="width: 18rem;" class="card">
-      {% if game.cover === undefined %}
-      <img style="width: 18rem;" src="images/CoverMissing.jpg" alt ="Game's cover is missing" />
-      {% else %}
-      <img style="width: 18rem;" src="{{game.cover.url}}" alt="Game's cover" />
-      {% endif %}
-    <div class="card-body">
-      <h5 class="card-title">{{game.name}}</h5>
-      <a href="/game/{{game.slug}}" class="btn btn-primary">Details Game!</a>
+  {% block content %}
+    <h1>Bienvenue sur notre site de jeux vidéos</h1>
+
+    <div class="container">
+      <div class="row">
+        {% for game in games %}
+        <div class="col-lg-3 col-md-4 col-sm-6">
+          <div class="card border-primary mb-3">
+              {% if game.cover === undefined %}
+              <img class="card-img-top" src="images/CoverMissing.jpg" alt ="Game's cover is missing" />
+              {% else %}
+              <img class="card-img-top" src="{{game.cover.url}}" alt="Game's cover" />
+              {% endif %}
+            <div class="card-body text-secondary d-flex align-items-center justify-content-center">
+              <h5 class="card-title">{{game.name}}</h5>
+            </div>
+            <a href="/game/{{game.slug}}" class="btn-outline-primary">
+              <div class="card-footer bg-transparent border-primary text-center">
+                Details Game!
+              </div>
+            </a>
+          </div>
+        </div>
+        {% endfor %}
+      </div>
     </div>
-  </div>
-</div>
+  {% endblock %}
+
   {# <div class="card-col-sm-3 col-md-2" style="width: 18rem;">
       {% if game.cover === undefined %}
       <img src="images/CoverMissing.jpg" alt ="Game's cover is missing" />
@@ -28,7 +40,7 @@
     </div>
   </div> #}
 
-{% endfor %}
+
 
    {# <ul> #}
     {# {% for game in games %}
@@ -42,4 +54,3 @@
         </li> #}
     {# {% endfor %}
    </ul> #}
-  {% endblock %}
